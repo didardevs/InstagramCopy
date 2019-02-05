@@ -1,14 +1,14 @@
 //
-//  MainVC.swift
+//  UploadPostVC.swift
 //  InstagramCopy
 //
-//  Created by Didar Naurzbayev on 2/3/19.
+//  Created by Didar Naurzbayev on 2/4/19.
 //  Copyright © 2019 Didar Naurzbayev. All rights reserved.
 //
 
 import UIKit
 
-class MainVC: UIViewController {
+class UploadPostVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

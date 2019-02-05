@@ -17,10 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        window = UIWindow()
-        window?.rootViewController = UINavigationController(rootViewController: LoginVC())
-        
         FirebaseApp.configure()
+        
+        window = UIWindow()
+        window?.rootViewController = MainTabVC()
+        
         return true
     }
 

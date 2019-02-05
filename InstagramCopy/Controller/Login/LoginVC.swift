@@ -111,10 +111,18 @@ class LoginVC: UIViewController {
 
             // handle success
 
-          //  guard let mainTabVC = UIApplication.shared.keyWindow?.rootViewController as? MainVC else { return }
 
-            // configure view controllers in maintabvc
-//            mainTabVC.configureViewControllers()
+
+            guard let mainTabVC = UIApplication.shared.keyWindow?.rootViewController as? MainTabVC else { return }
+            
+            
+            //configure VC in Main tab
+            mainTabVC.configureViewControllers()
+            
+
+            
+
+            
 
             // dismiss login controller
             self.dismiss(animated: true, completion: nil)
