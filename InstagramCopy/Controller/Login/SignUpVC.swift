@@ -139,7 +139,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
     @objc func handleSignUp() {
         
         // properties
-        guard let email = emailTextField.text else { return }
+        guard let email = emailTextField.text?.lowercased() else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullName = fullNameTextField.text else { return }
         guard let username = usernameTextField.text?.lowercased() else { return }
@@ -187,9 +187,14 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
                     
                     // save user info to database
                     USER_REF.updateChildValues(values, withCompletionBlock: { (error, ref) in
-                        
 
-                        print("user created")
+                        guard let mainTabVC = UIApplication.shared.keyWindow?.rootViewController as? MainTabVC else { return }
+                        
+                        // configure view controllers in maintabvc
+                        mainTabVC.configureViewControllers()
+                        
+                        // dismiss login controller
+                        self.dismiss(animated: true, completion: nil)
                     })
                 })
             })
