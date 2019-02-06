@@ -10,11 +10,11 @@ import UIKit
 import Firebase
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
+        
+        
         //delegate
         self.delegate = self
         
@@ -62,7 +62,7 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         //return nav controller
         return navController
     }
-
+    
     func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser == nil {
             DispatchQueue.main.async {
@@ -73,10 +73,6 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
             return
         }
     }
-    
-    
-    
-    
     
     
     

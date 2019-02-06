@@ -56,14 +56,14 @@ class LoginVC: UIViewController {
     
     let dontHaveAccountButton: UIButton = {
         let button = UIButton(type: .system)
-
+        
         let attributedTitle = NSMutableAttributedString(string: "Don't have an account?  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         
         attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)]))
         
         button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
         button.setAttributedTitle(attributedTitle, for: .normal)
-
+        
         return button
     }()
     
@@ -87,7 +87,7 @@ class LoginVC: UIViewController {
     
     
     // MARK: - Handlers
-
+    
     @objc func handleShowSignUp() {
         let signUpVC = SignUpVC()
         navigationController?.pushViewController(signUpVC, animated: true)
@@ -99,34 +99,34 @@ class LoginVC: UIViewController {
         guard
             let email = emailTextField.text,
             let password = passwordTextField.text else { return }
-
+        
         // sign user in with email and password
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-
+            
             // handle error
             if let error = error {
                 print("Unable to sign user in with error", error.localizedDescription)
                 return
             }
-
+            
             // handle success
-
-
-
+            
+            
+            
             guard let mainTabVC = UIApplication.shared.keyWindow?.rootViewController as? MainTabVC else { return }
             
             
             //configure VC in Main tab
             mainTabVC.configureViewControllers()
             
-
             
-
             
-
+            
+            
+            
             // dismiss login controller
             self.dismiss(animated: true, completion: nil)
-
+            
         }
     }
     

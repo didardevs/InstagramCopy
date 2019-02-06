@@ -187,7 +187,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
                     
                     // save user info to database
                     USER_REF.updateChildValues(values, withCompletionBlock: { (error, ref) in
-
+                        
                         guard let mainTabVC = UIApplication.shared.keyWindow?.rootViewController as? MainTabVC else { return }
                         
                         // configure view controllers in maintabvc
@@ -228,5 +228,5 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
         view.addSubview(stackView)
         stackView.anchor(top: plusPhotoBtn.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 24, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 240)
     }
-
+    
 }

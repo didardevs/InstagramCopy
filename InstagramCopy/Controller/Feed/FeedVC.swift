@@ -17,7 +17,7 @@ class FeedVC: UICollectionViewController {
     
     
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,40 +25,40 @@ class FeedVC: UICollectionViewController {
         
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         configureNavigationBar()
-
+        
     }
-
-
+    
+    
     // MARK: UICollectionViewDataSource
-
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
     }
-
-
+    
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return 0
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-
-    
+        
+        
+        
         return cell
     }
-
-        // MARK: - Handelers
+    
+    // MARK: - Handelers
     
     func configureNavigationBar() {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-
+        
         self.navigationItem.title = "Feed"
     }
-
+    
     @objc func handleLogout() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in

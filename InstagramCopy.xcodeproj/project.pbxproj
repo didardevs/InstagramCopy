@@ -20,6 +20,8 @@
 		5F7CE630220754110044CA8B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE62F220754110044CA8B /* Extensions.swift */; };
 		5F7CE63222075A630044CA8B /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE63122075A630044CA8B /* SignUpVC.swift */; };
 		5F7CE634220761650044CA8B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F7CE633220761650044CA8B /* GoogleService-Info.plist */; };
+		5FAA79B1220AFA7600712B78 /* FollowLikeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA79B0220AFA7600712B78 /* FollowLikeVC.swift */; };
+		5FAA79B3220AFB8000712B78 /* FollowLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA79B2220AFB8000712B78 /* FollowLikeCell.swift */; };
 		5FAB156322085A74002F98A5 /* MainTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAB156222085A74002F98A5 /* MainTabVC.swift */; };
 		5FAB156522085D16002F98A5 /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAB156422085D16002F98A5 /* FeedVC.swift */; };
 		5FAB156722085D29002F98A5 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAB156622085D29002F98A5 /* SearchVC.swift */; };
@@ -47,6 +49,8 @@
 		5F7CE62F220754110044CA8B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5F7CE63122075A630044CA8B /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		5F7CE633220761650044CA8B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5FAA79B0220AFA7600712B78 /* FollowLikeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeVC.swift; sourceTree = "<group>"; };
+		5FAA79B2220AFB8000712B78 /* FollowLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeCell.swift; sourceTree = "<group>"; };
 		5FAB156222085A74002F98A5 /* MainTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabVC.swift; sourceTree = "<group>"; };
 		5FAB156422085D16002F98A5 /* FeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		5FAB156622085D29002F98A5 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
@@ -104,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				5FAB156C22085D79002F98A5 /* UserProfileVC.swift */,
+				5FAA79B0220AFA7600712B78 /* FollowLikeVC.swift */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -162,6 +167,7 @@
 			children = (
 				5F727B8E22094C2200624E9C /* UserProfileHeader.swift */,
 				5F727B9A22098F0900624E9C /* SearchUserCell.swift */,
+				5FAA79B2220AFB8000712B78 /* FollowLikeCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -353,6 +359,7 @@
 				5F727B9B22098F0900624E9C /* SearchUserCell.swift in Sources */,
 				5F727B9122095C6F00624E9C /* User.swift in Sources */,
 				5FAB156922085D47002F98A5 /* UploadPostVC.swift in Sources */,
+				5FAA79B3220AFB8000712B78 /* FollowLikeCell.swift in Sources */,
 				5FAB156B22085D63002F98A5 /* NotificationsVC.swift in Sources */,
 				5FAB156722085D29002F98A5 /* SearchVC.swift in Sources */,
 				5F727B8F22094C2200624E9C /* UserProfileHeader.swift in Sources */,
@@ -363,6 +370,7 @@
 				5F7CE62D220751A90044CA8B /* LoginVC.swift in Sources */,
 				5F7CE630220754110044CA8B /* Extensions.swift in Sources */,
 				5F7CE6182207515C0044CA8B /* AppDelegate.swift in Sources */,
+				5FAA79B1220AFA7600712B78 /* FollowLikeVC.swift in Sources */,
 				5F5C8D4422077BBB00C94FA6 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

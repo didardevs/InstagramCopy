@@ -21,7 +21,7 @@ class SearchUserCell: UITableViewCell {
             self.detailTextLabel?.text = fullName
         }
     }
-
+    
     //MARK: Properties
     let profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -44,7 +44,7 @@ class SearchUserCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 48 / 2
         profileImageView.clipsToBounds = true
         
-
+        
     }
     
     override func layoutSubviews() {
