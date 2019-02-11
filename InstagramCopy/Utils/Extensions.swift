@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 extension UIView{
     func anchor(top: NSLayoutYAxisAnchor?, left: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, right: NSLayoutXAxisAnchor?, paddingTop: CGFloat, paddingLeft: CGFloat, paddingBottom: CGFloat, paddingRight: CGFloat, width: CGFloat, height: CGFloat){
@@ -40,46 +41,48 @@ extension UIView{
     }
 }
 
-
-var imageCache = [String: UIImage]()
-
-extension UIImageView{
-    func loadImage(with urlString: String){
+extension Date {
+    
+    func timeAgoToDisplay() -> String {
         
+        let secondsAgo = Int(Date().timeIntervalSince(self))
         
-        // check if image exists in cache
-        if let cachedImage = imageCache[urlString]{
-            self.image = cachedImage
-            return
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        let month = 4 * week
+        
+        let quotient: Int
+        let unit: String
+        
+        if secondsAgo < minute {
+            quotient = secondsAgo
+            unit = "SECOND"
+        } else if secondsAgo < hour {
+            quotient = secondsAgo / minute
+            unit = "MIN"
+        } else if secondsAgo < day {
+            quotient = secondsAgo / hour
+            unit = "HOUR"
+        } else if secondsAgo < week {
+            quotient = secondsAgo / day
+            unit = "DAY"
+        } else if secondsAgo < month {
+            quotient = secondsAgo / week
+            unit = "WEEK"
+        } else {
+            quotient = secondsAgo / month
+            unit = "MONTH"
         }
         
-        // url for image location
-        guard let url = URL(string: urlString) else { return }
-        
-        // fetch contents of URL
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
-            // handle error
-            if let error = error {
-                print("Failed to load image with error", error.localizedDescription)
-            }
-            
-            // image data
-            guard let imageData = data else { return }
-            
-            // create image using image data
-            let photoImage = UIImage(data: imageData)
-            
-            // set key and value for image cache
-            imageCache[url.absoluteString] = photoImage
-            
-            // set image
-            DispatchQueue.main.async {
-                self.image = photoImage
-            }
-            }.resume()
+        return "\(quotient) \(unit)\(quotient == 1 ? "" : "S") AGO"
     }
+    
 }
+
+
+
 
 
 extension UIButton {
@@ -117,5 +120,16 @@ extension Database {
             completion(user)
         }
     }
-    
+    static func fetchPost(with postId: String, completion: @escaping(Post) -> ()) {
+        
+        POSTS_REF.child(postId).observeSingleEvent(of: .value) { (snapshot) in
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            guard let ownerUid = dictionary["ownerUid"] as? String else { return }
+            
+            Database.fetchUser(with: ownerUid, completion: { (user) in
+                let post = Post(postId: postId, user: user, dictionary: dictionary)
+                completion(post)
+            })
+        }
+    }
 }

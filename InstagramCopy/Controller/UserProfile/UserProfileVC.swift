@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 
 private let reuseIdentifier = "Cell"
 private let headerIdentifier = "UserProfileHeader"
@@ -20,6 +22,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     
     var user: User?
+    var posts = [Post]()
+    var currentKey: String?
     
     
     
@@ -28,7 +32,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         super.viewDidLoad()
         
         //register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
         //background color
@@ -40,6 +44,8 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             
         }
         
+        // fetch posts
+        fetchPosts()
         
         
     }
@@ -73,7 +79,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return posts.count
     }
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
@@ -91,14 +97,25 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return header
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! UserPostCell
         
-        // Configure the cell
+        cell.post = posts[indexPath.item]
         
         return cell
     }
     
-    
+    // view single post
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        feedVC.viewSinglePost = true
+        feedVC.userProfileController = self
+        
+        feedVC.post = posts[indexPath.item]
+        
+        navigationController?.pushViewController(feedVC, animated: true)
+    }
     
     //MARK: - Delegates
     func handleEditFollowTapped(for header: UserProfileHeader) {
@@ -187,6 +204,63 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     
     //MARK: - API
+    func fetchPosts() {
+        
+        var uid: String!
+        
+        if let user = self.user {
+            uid = user.uid
+        } else {
+            uid = Auth.auth().currentUser?.uid
+        }
+        
+        // initial data pull
+        if currentKey == nil {
+            
+            USER_POSTS_REF.child(uid).queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.collectionView?.refreshControl?.endRefreshing()
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let postId = snapshot.key
+                    self.fetchPost(withPostId: postId)
+                })
+                self.currentKey = first.key
+            })
+        } else {
+            
+            USER_POSTS_REF.child(uid).queryOrderedByKey().queryEnding(atValue: self.currentKey).queryLimited(toLast: 7).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else { return }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                allObjects.forEach({ (snapshot) in
+                    let postId = snapshot.key
+                    
+                    if postId != self.currentKey {
+                        self.fetchPost(withPostId: postId)
+                    }
+                })
+                self.currentKey = first.key
+            })
+        }
+    }
+    
+    
+    func fetchPost(withPostId postId: String){
+        Database.fetchPost(with: postId) { (post) in
+            
+            self.posts.append(post)
+            
+            self.posts.sort(by: { (post1, post2) -> Bool in
+                return post1.creationDate > post2.creationDate
+            })
+            self.collectionView?.reloadData()
+        }
+    }
     
     func fetchCurrentUserData(){
         

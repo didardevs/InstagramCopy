@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class UserProfileHeader: UICollectionViewCell {
     
@@ -34,8 +35,8 @@ class UserProfileHeader: UICollectionViewCell {
     }
     
     //MARK: - Properties
-    let profileImageView: UIImageView = {
-        let iv = UIImageView()
+    let profileImageView: CustomImageView = {
+        let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray

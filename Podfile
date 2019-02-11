@@ -13,8 +13,4 @@ target 'InstagramCopy' do
    pod 'Firebase/Auth'
    pod 'ActiveLabel'
 
-
-
-
-
 end

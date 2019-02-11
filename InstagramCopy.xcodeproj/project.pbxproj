@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F586B1F220C94CF00676672 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F586B1E220C94CF00676672 /* FeedCell.swift */; };
 		5F5C8D4422077BBB00C94FA6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5C8D4322077BBB00C94FA6 /* Constants.swift */; };
+		5F5ECB05220BF3CE003DE647 /* SelectImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5ECB04220BF3CE003DE647 /* SelectImageVC.swift */; };
+		5F5ECB07220BF4DE003DE647 /* SelectPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5ECB06220BF4DE003DE647 /* SelectPhotoCell.swift */; };
+		5F5ECB09220BF52E003DE647 /* SelectPhotoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5ECB08220BF52E003DE647 /* SelectPhotoHeader.swift */; };
+		5F5ECB0B220C393E003DE647 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5ECB0A220C393E003DE647 /* Post.swift */; };
+		5F5ECB0D220C3CA7003DE647 /* UserPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5ECB0C220C3CA7003DE647 /* UserPostCell.swift */; };
+		5F5ECB0F220C44BE003DE647 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5ECB0E220C44BE003DE647 /* CustomImageView.swift */; };
 		5F727B8F22094C2200624E9C /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F727B8E22094C2200624E9C /* UserProfileHeader.swift */; };
 		5F727B9122095C6F00624E9C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F727B9022095C6F00624E9C /* User.swift */; };
 		5F727B9B22098F0900624E9C /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F727B9A22098F0900624E9C /* SearchUserCell.swift */; };
@@ -34,7 +41,14 @@
 /* Begin PBXFileReference section */
 		3A9A06EE1B56F0AE00EA93F1 /* Pods-InstagramCopy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramCopy.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramCopy/Pods-InstagramCopy.release.xcconfig"; sourceTree = "<group>"; };
 		5EFFC75EF02AF13FED4C285E /* Pods-InstagramCopy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramCopy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramCopy/Pods-InstagramCopy.debug.xcconfig"; sourceTree = "<group>"; };
+		5F586B1E220C94CF00676672 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		5F5C8D4322077BBB00C94FA6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5F5ECB04220BF3CE003DE647 /* SelectImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImageVC.swift; sourceTree = "<group>"; };
+		5F5ECB06220BF4DE003DE647 /* SelectPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoCell.swift; sourceTree = "<group>"; };
+		5F5ECB08220BF52E003DE647 /* SelectPhotoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPhotoHeader.swift; sourceTree = "<group>"; };
+		5F5ECB0A220C393E003DE647 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		5F5ECB0C220C3CA7003DE647 /* UserPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostCell.swift; sourceTree = "<group>"; };
+		5F5ECB0E220C44BE003DE647 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		5F727B8E22094C2200624E9C /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		5F727B9022095C6F00624E9C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5F727B9A22098F0900624E9C /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
@@ -49,6 +63,16 @@
 		5F7CE62F220754110044CA8B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5F7CE63122075A630044CA8B /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		5F7CE633220761650044CA8B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5F9D3381220C465700DB811C /* libFirebaseAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D3383220C465700DB811C /* libFirebaseCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D3385220C465700DB811C /* libFirebaseDatabase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseDatabase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D3387220C465700DB811C /* libFirebaseMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D3389220C465700DB811C /* libFirebaseStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D338B220C474F00DB811C /* libFirebaseAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D338D220C474F00DB811C /* libFirebaseCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D338F220C474F00DB811C /* libFirebaseDatabase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseDatabase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D3391220C474F00DB811C /* libFirebaseMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F9D3393220C474F00DB811C /* libFirebaseStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FAA79B0220AFA7600712B78 /* FollowLikeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeVC.swift; sourceTree = "<group>"; };
 		5FAA79B2220AFB8000712B78 /* FollowLikeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowLikeCell.swift; sourceTree = "<group>"; };
 		5FAB156222085A74002F98A5 /* MainTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabVC.swift; sourceTree = "<group>"; };
@@ -92,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				5FAB156822085D47002F98A5 /* UploadPostVC.swift */,
+				5F5ECB04220BF3CE003DE647 /* SelectImageVC.swift */,
 			);
 			path = UploadPost;
 			sourceTree = "<group>";
@@ -168,6 +193,10 @@
 				5F727B8E22094C2200624E9C /* UserProfileHeader.swift */,
 				5F727B9A22098F0900624E9C /* SearchUserCell.swift */,
 				5FAA79B2220AFB8000712B78 /* FollowLikeCell.swift */,
+				5F5ECB06220BF4DE003DE647 /* SelectPhotoCell.swift */,
+				5F5ECB08220BF52E003DE647 /* SelectPhotoHeader.swift */,
+				5F5ECB0C220C3CA7003DE647 /* UserPostCell.swift */,
+				5F586B1E220C94CF00676672 /* FeedCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -176,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				5F727B9022095C6F00624E9C /* User.swift */,
+				5F5ECB0A220C393E003DE647 /* Post.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -186,6 +216,7 @@
 				5F7CE62F220754110044CA8B /* Extensions.swift */,
 				5F5C8D4322077BBB00C94FA6 /* Constants.swift */,
 				5F727B9C2209B45200624E9C /* Protocols.swift */,
+				5F5ECB0E220C44BE003DE647 /* CustomImageView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -202,6 +233,16 @@
 		953DA3409ABE3D4F0E4472D3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F9D338B220C474F00DB811C /* libFirebaseAuth.a */,
+				5F9D338D220C474F00DB811C /* libFirebaseCore.a */,
+				5F9D338F220C474F00DB811C /* libFirebaseDatabase.a */,
+				5F9D3391220C474F00DB811C /* libFirebaseMessaging.a */,
+				5F9D3393220C474F00DB811C /* libFirebaseStorage.a */,
+				5F9D3381220C465700DB811C /* libFirebaseAuth.a */,
+				5F9D3383220C465700DB811C /* libFirebaseCore.a */,
+				5F9D3385220C465700DB811C /* libFirebaseDatabase.a */,
+				5F9D3387220C465700DB811C /* libFirebaseMessaging.a */,
+				5F9D3389220C465700DB811C /* libFirebaseStorage.a */,
 				F3FF018F70CD167FACF132C1 /* Pods_InstagramCopy.framework */,
 			);
 			name = Frameworks;
@@ -355,21 +396,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F5ECB05220BF3CE003DE647 /* SelectImageVC.swift in Sources */,
+				5F5ECB09220BF52E003DE647 /* SelectPhotoHeader.swift in Sources */,
+				5F5ECB0F220C44BE003DE647 /* CustomImageView.swift in Sources */,
 				5F727B9D2209B45200624E9C /* Protocols.swift in Sources */,
 				5F727B9B22098F0900624E9C /* SearchUserCell.swift in Sources */,
+				5F586B1F220C94CF00676672 /* FeedCell.swift in Sources */,
 				5F727B9122095C6F00624E9C /* User.swift in Sources */,
 				5FAB156922085D47002F98A5 /* UploadPostVC.swift in Sources */,
 				5FAA79B3220AFB8000712B78 /* FollowLikeCell.swift in Sources */,
 				5FAB156B22085D63002F98A5 /* NotificationsVC.swift in Sources */,
 				5FAB156722085D29002F98A5 /* SearchVC.swift in Sources */,
 				5F727B8F22094C2200624E9C /* UserProfileHeader.swift in Sources */,
+				5F5ECB0D220C3CA7003DE647 /* UserPostCell.swift in Sources */,
 				5FAB156D22085D79002F98A5 /* UserProfileVC.swift in Sources */,
 				5F7CE63222075A630044CA8B /* SignUpVC.swift in Sources */,
+				5F5ECB0B220C393E003DE647 /* Post.swift in Sources */,
 				5FAB156522085D16002F98A5 /* FeedVC.swift in Sources */,
 				5FAB156322085A74002F98A5 /* MainTabVC.swift in Sources */,
 				5F7CE62D220751A90044CA8B /* LoginVC.swift in Sources */,
 				5F7CE630220754110044CA8B /* Extensions.swift in Sources */,
 				5F7CE6182207515C0044CA8B /* AppDelegate.swift in Sources */,
+				5F5ECB07220BF4DE003DE647 /* SelectPhotoCell.swift in Sources */,
 				5FAA79B1220AFA7600712B78 /* FollowLikeVC.swift in Sources */,
 				5F5C8D4422077BBB00C94FA6 /* Constants.swift in Sources */,
 			);
@@ -528,7 +576,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = didarnaurzbayev.InstagramCopy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -547,7 +595,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = didarnaurzbayev.InstagramCopy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

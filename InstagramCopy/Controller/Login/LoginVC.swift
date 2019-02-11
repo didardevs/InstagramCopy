@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class LoginVC: UIViewController {
     let logoContainerView: UIView = {
@@ -110,8 +111,6 @@ class LoginVC: UIViewController {
             }
             
             // handle success
-            
-            
             
             guard let mainTabVC = UIApplication.shared.keyWindow?.rootViewController as? MainTabVC else { return }
             

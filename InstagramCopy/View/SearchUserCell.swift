@@ -23,8 +23,8 @@ class SearchUserCell: UITableViewCell {
     }
     
     //MARK: Properties
-    let profileImageView: UIImageView = {
-        let iv = UIImageView()
+    let profileImageView: CustomImageView = {
+        let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
@@ -43,6 +43,8 @@ class SearchUserCell: UITableViewCell {
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.layer.cornerRadius = 48 / 2
         profileImageView.clipsToBounds = true
+        
+        self.selectionStyle = .none
         
         
     }

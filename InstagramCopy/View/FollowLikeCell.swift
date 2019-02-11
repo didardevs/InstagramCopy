@@ -8,10 +8,12 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class FollowLikeCell: UITableViewCell {
-    var delegate: FollowCellDelegate?
     // MARK: - Properties
+    
+    var delegate: FollowCellDelegate?
     
     var user: User? {
         
@@ -49,12 +51,11 @@ class FollowLikeCell: UITableViewCell {
         }
     }
     
-    let profileImageView: UIImageView = {
-        let iv = UIImageView()
+    let profileImageView: CustomImageView = {
+        let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
-        
         return iv
     }()
     

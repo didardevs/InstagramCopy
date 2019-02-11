@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import FirebaseAuth
 
 class User {
     

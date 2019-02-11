@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 private let reuseIdentifier = "FollowCell"
 
@@ -70,6 +71,20 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let user = users[indexPath.row]
+        
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        userProfileVC.user = user
+        
+        navigationController?.pushViewController(userProfileVC, animated: true)
+    }
+    
+    
+    
+    // MARK: - handlers
     
     func handleFollowTapped(for cell: FollowLikeCell) {
         

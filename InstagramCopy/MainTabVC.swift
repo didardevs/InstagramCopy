@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class MainTabVC: UITabBarController, UITabBarControllerDelegate {
     
@@ -61,6 +62,22 @@ class MainTabVC: UITabBarController, UITabBarControllerDelegate {
         
         //return nav controller
         return navController
+    }
+    // MARK: - UITabBar
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let index = viewControllers?.index(of: viewController)
+        
+        if index == 2 {
+            let selectImageVC = SelectImageVC(collectionViewLayout: UICollectionViewFlowLayout())
+            let navController = UINavigationController(rootViewController: selectImageVC)
+            navController.navigationBar.tintColor = .black
+            
+            present(navController, animated: true, completion: nil)
+            return true
+            
+        }
+        return true
     }
     
     func checkIfUserIsLoggedIn() {
