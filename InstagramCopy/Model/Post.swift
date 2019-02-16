@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import FirebaseDatabase
 import Foundation
 
 class Post {
@@ -46,5 +47,55 @@ class Post {
             self.creationDate = Date(timeIntervalSince1970: creationDate)
         }
     }
+    
+    func adjustLikes(addLike: Bool, completion: @escaping(Int) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        // UPDATE: Unwrap post id to work with firebase
+        guard let postId = self.postId else { return }
+        
+        if addLike {
+            USER_LIKES_REF.child(currentUid).updateChildValues([postId: 1], withCompletionBlock: { (err, ref) in
+               
+                
+                POST_LIKES_REF.child(self.postId).updateChildValues([currentUid: 1], withCompletionBlock: { (err, ref) in
+                    self.likes = self.likes + 1
+                    self.didLike = true
+                    POSTS_REF.child(self.postId).child("likes").setValue(self.likes)
+                    completion(self.likes)
+                })
+            })
+        } else {
+            USER_LIKES_REF.child(currentUid).child(postId).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let notificationID = snapshot.value as? String {
+                    NOTIFICATIONS_REF.child(self.ownerUid).child(notificationID).removeValue(completionBlock: { (err, ref) in
+                        self.removeLike(withCompletion: { (likes) in
+                            completion(likes)
+                        })
+                    })
+                } else {
+                    self.removeLike(withCompletion: { (likes) in
+                        completion(likes)
+                    })
+                }
+            })
+        }
+    }
+    
+    func removeLike(withCompletion completion: @escaping (Int) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        USER_LIKES_REF.child(currentUid).child(self.postId).removeValue(completionBlock: { (err, ref) in
+            
+            POST_LIKES_REF.child(self.postId).child(currentUid).removeValue(completionBlock: { (err, ref) in
+                guard self.likes > 0 else { return }
+                self.likes = self.likes - 1
+                self.didLike = false
+                POSTS_REF.child(self.postId).child("likes").setValue(self.likes)
+                completion(self.likes)
+            })
+        })
+    }
+    
     
 }

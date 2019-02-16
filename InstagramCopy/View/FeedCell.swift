@@ -32,6 +32,7 @@ class FeedCell: UICollectionViewCell {
             postImageView.loadImage(with: imageUrl)
             
             likesLabel.text = "\(likes) likes"
+            configureLikeButton()
 
         }
     }
@@ -42,6 +43,7 @@ class FeedCell: UICollectionViewCell {
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
+        
         return iv
     }()
     
@@ -69,7 +71,10 @@ class FeedCell: UICollectionViewCell {
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         
-        
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapToLike))
+        likeTap.numberOfTapsRequired = 2
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(likeTap)
         return iv
     }()
     lazy var likeButton: UIButton = {
@@ -107,12 +112,12 @@ class FeedCell: UICollectionViewCell {
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = "3 likes"
         
-        // add gesture recognizer to label
-//        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
-//        likeTap.numberOfTapsRequired = 1
-//        label.isUserInteractionEnabled = true
-//        label.addGestureRecognizer(likeTap)
-//        
+//         add gesture recognizer to label
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
+        likeTap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(likeTap)
+        
         return label
     }()
     
@@ -179,13 +184,22 @@ class FeedCell: UICollectionViewCell {
     }
     
     @objc func handleLikeTapped() {
-        delegate?.handleLikeTapped(for: self)
+        delegate?.handleLikeTapped(for: self, isDoubleTap: false)
     }
     
     @objc func handleCommentTapped() {
         delegate?.handleCommentTapped(for: self)
     }
+    func configureLikeButton() {
+        delegate?.handleConfigureLikeButton(for: self)
+    }
+    @objc func handleShowLikes() {
+        delegate?.handleShowLikes(for: self)
+    }
     
+    @objc func handleDoubleTapToLike() {
+        delegate?.handleLikeTapped(for: self, isDoubleTap: true)
+    }
     func configureActionButtons() {
         stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, messageButton])
         
