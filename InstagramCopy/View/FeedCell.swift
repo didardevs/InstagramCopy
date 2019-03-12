@@ -77,6 +77,7 @@ class FeedCell: UICollectionViewCell {
         iv.addGestureRecognizer(likeTap)
         return iv
     }()
+    
     lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)

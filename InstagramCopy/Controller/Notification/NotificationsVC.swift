@@ -7,84 +7,183 @@
 //
 
 import UIKit
+import Firebase
 
-class NotificationsVC: UITableViewController {
+private let reuseIdentifer = "NotificationCell"
 
+class NotificationsVC: UITableViewController, NotificationCellDelegate {
+    
+    // MARK: - Properties
+    
+    var timer: Timer?
+    var notifications = [Notification]()
+    var refresher = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        // clear separator lines
+        tableView.separatorColor = .clear
+        
+        // nav title
+        navigationItem.title = "Notifications"
+        
+        // register cell class
+        tableView.register(NotificationCell.self, forCellReuseIdentifier: reuseIdentifer)
+        
+        // fetch notifications
+        fetchNotifications()
+        
+        // refresh control
+        configureRefreshControl()
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    
+    // MARK: - UITableView
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return notifications.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifer, for: indexPath) as! NotificationCell
+        
+        let notification = notifications[indexPath.row]
+        
+        cell.notification = notification
+        
+        if notification.notificationType == .Comment {
+            if let commentText = notification.commentText {
+                cell.configureNotificationLabel(withCommentText: commentText)
+            }
+        }
+        
+        cell.delegate = self
+        
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let notification = notifications[indexPath.row]
+        
+        let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+        userProfileVC.user = notification.user
+        navigationController?.pushViewController(userProfileVC, animated: true)
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    // MARK: - NotificationCellDelegate
+    
+    func handleFollowTapped(for cell: NotificationCell) {
+        
+        guard let user = cell.notification?.user else { return }
+        
+        if user.isFollowed {
+            
+            // handle unfollow user
+            user.unfollow()
+            cell.followButton.configure(didFollow: false)
+        } else {
+            
+            // handle follow user
+            user.follow()
+            cell.followButton.configure(didFollow: true)
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    func handlePostTapped(for cell: NotificationCell) {
+        guard let post = cell.notification?.post else { return }
+        guard let notification = cell.notification else { return }
+        
+        if notification.notificationType == .Comment {
+            let commentController = CommentVC(collectionViewLayout: UICollectionViewFlowLayout())
+            commentController.post = post
+            navigationController?.pushViewController(commentController, animated: true)
+        } else {
+            let feedController = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+            feedController.viewSinglePost = true
+            feedController.post = post
+            navigationController?.pushViewController(feedController, animated: true)
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    // MARK: - Handlers
+    
+    @objc func handleRefresh() {
+        self.notifications.removeAll()
+        self.tableView.reloadData()
+        fetchNotifications()
+        refresher.endRefreshing()
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @objc func handleSortNotifications() {
+        self.notifications.sort { (notification1, notification2) -> Bool in
+            return notification1.creationDate > notification2.creationDate
+        }
+        self.tableView.reloadData()
     }
-    */
-
+    
+    func handleReloadTable() {
+        self.timer?.invalidate()
+        
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(handleSortNotifications), userInfo: nil, repeats: false)
+    }
+    
+    func configureRefreshControl() {
+        refresher.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        self.tableView.refreshControl = refresher
+    }
+    
+    // MARK: - API
+    
+    func getCommentData(forNotification notification: Notification) {
+        
+        guard let postId = notification.postId else { return }
+        guard let commentId = notification.commentId else { return }
+        
+        COMMENT_REF.child(postId).child(commentId).observeSingleEvent(of: .value) { (snapshot) in
+            guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            guard let commentText = dictionary["commentText"] as? String else { return }
+            
+            notification.commentText = commentText
+        }
+    }
+    
+    func fetchNotifications() {
+        
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        NOTIFICATIONS_REF.child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
+            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            allObjects.forEach({ (snapshot) in
+                let notificationId = snapshot.key
+                guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                guard let uid = dictionary["uid"] as? String else { return }
+                
+                Database.fetchUser(with: uid, completion: { (user) in
+                    
+                    // if notification is for post
+                    if let postId = dictionary["postId"] as? String {
+                        Database.fetchPost(with: postId, completion: { (post) in
+                            let notification = Notification(user: user, post: post, dictionary: dictionary)
+                            if notification.notificationType == .Comment {
+                                self.getCommentData(forNotification: notification)
+                            }
+                            self.notifications.append(notification)
+                            self.handleReloadTable()
+                        })
+                    } else {
+                        let notification = Notification(user: user, dictionary: dictionary)
+                        self.notifications.append(notification)
+                        self.handleReloadTable()
+                    }
+                })
+                NOTIFICATIONS_REF.child(currentUid).child(notificationId).child("checked").setValue(1)
+            })
+        }
+    }
 }

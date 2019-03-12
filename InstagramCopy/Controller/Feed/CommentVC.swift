@@ -156,8 +156,6 @@ extension CommentVC: CommentInputAccesoryViewDelegate {
         COMMENT_REF.child(postId).childByAutoId().updateChildValues(values) { (err, ref) in
             self.uploadCommentNotificationToServer()
             
-
-            
             self.containerView.clearCommentTextView()
         }
     }

@@ -56,7 +56,7 @@ class Post {
         
         if addLike {
             USER_LIKES_REF.child(currentUid).updateChildValues([postId: 1], withCompletionBlock: { (err, ref) in
-               
+                self.sendLikeNotificationToServer()
                 
                 POST_LIKES_REF.child(self.postId).updateChildValues([currentUid: 1], withCompletionBlock: { (err, ref) in
                     self.likes = self.likes + 1
@@ -98,4 +98,21 @@ class Post {
     }
     
     
+    func sendLikeNotificationToServer() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        let creationDate = Int(NSDate().timeIntervalSince1970)
+        
+        if currentUid != self.ownerUid {
+            let values = ["checked": 0,
+                          "creationDate": creationDate,
+                          "uid": currentUid,
+                          "type": LIKE_INT_VALUE,
+                          "postId": postId] as [String : Any]
+            
+            let notificationRef = NOTIFICATIONS_REF.child(self.ownerUid).childByAutoId()
+            notificationRef.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                USER_LIKES_REF.child(currentUid).child(self.postId).setValue(notificationRef.key)
+            })
+        }
+    }
 }

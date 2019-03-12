@@ -12,6 +12,8 @@
 		5F2A7D5422153678000C11D1 /* InputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A7D5322153678000C11D1 /* InputTextView.swift */; };
 		5F2A7D562215369A000C11D1 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A7D552215369A000C11D1 /* CommentInputAccessoryView.swift */; };
 		5F2A7D58221536DA000C11D1 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A7D57221536DA000C11D1 /* Comment.swift */; };
+		5F30787E221979180078B4A3 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F30787D221979180078B4A3 /* NotificationCell.swift */; };
+		5F307880221979750078B4A3 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F30787F221979750078B4A3 /* Notification.swift */; };
 		5F586B1F220C94CF00676672 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F586B1E220C94CF00676672 /* FeedCell.swift */; };
 		5F5C8D4422077BBB00C94FA6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5C8D4322077BBB00C94FA6 /* Constants.swift */; };
 		5F5ECB05220BF3CE003DE647 /* SelectImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5ECB04220BF3CE003DE647 /* SelectImageVC.swift */; };
@@ -32,6 +34,7 @@
 		5F7CE630220754110044CA8B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE62F220754110044CA8B /* Extensions.swift */; };
 		5F7CE63222075A630044CA8B /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE63122075A630044CA8B /* SignUpVC.swift */; };
 		5F7CE634220761650044CA8B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F7CE633220761650044CA8B /* GoogleService-Info.plist */; };
+		5F9A6E7B223787F400389015 /* SearchPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9A6E7A223787F400389015 /* SearchPostCell.swift */; };
 		5FAA79B1220AFA7600712B78 /* FollowLikeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA79B0220AFA7600712B78 /* FollowLikeVC.swift */; };
 		5FAA79B3220AFB8000712B78 /* FollowLikeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA79B2220AFB8000712B78 /* FollowLikeCell.swift */; };
 		5FAB156322085A74002F98A5 /* MainTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAB156222085A74002F98A5 /* MainTabVC.swift */; };
@@ -51,6 +54,8 @@
 		5F2A7D5322153678000C11D1 /* InputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextView.swift; sourceTree = "<group>"; };
 		5F2A7D552215369A000C11D1 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		5F2A7D57221536DA000C11D1 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		5F30787D221979180078B4A3 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		5F30787F221979750078B4A3 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5F586B1E220C94CF00676672 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		5F5C8D4322077BBB00C94FA6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5F5ECB04220BF3CE003DE647 /* SelectImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectImageVC.swift; sourceTree = "<group>"; };
@@ -73,6 +78,7 @@
 		5F7CE62F220754110044CA8B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5F7CE63122075A630044CA8B /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		5F7CE633220761650044CA8B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5F9A6E7A223787F400389015 /* SearchPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPostCell.swift; sourceTree = "<group>"; };
 		5F9D3381220C465700DB811C /* libFirebaseAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F9D3383220C465700DB811C /* libFirebaseCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F9D3385220C465700DB811C /* libFirebaseDatabase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseDatabase.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,6 +225,8 @@
 				5F5ECB0C220C3CA7003DE647 /* UserPostCell.swift */,
 				5F586B1E220C94CF00676672 /* FeedCell.swift */,
 				5F2A7D5922153867000C11D1 /* Comment */,
+				5F30787D221979180078B4A3 /* NotificationCell.swift */,
+				5F9A6E7A223787F400389015 /* SearchPostCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -229,6 +237,7 @@
 				5F727B9022095C6F00624E9C /* User.swift */,
 				5F5ECB0A220C393E003DE647 /* Post.swift */,
 				5F2A7D57221536DA000C11D1 /* Comment.swift */,
+				5F30787F221979750078B4A3 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -429,6 +438,8 @@
 				5F727B9122095C6F00624E9C /* User.swift in Sources */,
 				5FAB156922085D47002F98A5 /* UploadPostVC.swift in Sources */,
 				5FAA79B3220AFB8000712B78 /* FollowLikeCell.swift in Sources */,
+				5F30787E221979180078B4A3 /* NotificationCell.swift in Sources */,
+				5F9A6E7B223787F400389015 /* SearchPostCell.swift in Sources */,
 				5FAB156B22085D63002F98A5 /* NotificationsVC.swift in Sources */,
 				5F2A7D58221536DA000C11D1 /* Comment.swift in Sources */,
 				5FAB156722085D29002F98A5 /* SearchVC.swift in Sources */,
@@ -447,6 +458,7 @@
 				5F7CE6182207515C0044CA8B /* AppDelegate.swift in Sources */,
 				5F5ECB07220BF4DE003DE647 /* SelectPhotoCell.swift in Sources */,
 				5FAA79B1220AFA7600712B78 /* FollowLikeVC.swift in Sources */,
+				5F307880221979750078B4A3 /* Notification.swift in Sources */,
 				5F5C8D4422077BBB00C94FA6 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
