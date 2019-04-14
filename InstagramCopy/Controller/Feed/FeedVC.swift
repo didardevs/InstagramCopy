@@ -14,9 +14,6 @@ import ActiveLabel
 private let reuseIdentifier = "Cell"
 
 class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, FeedCellDelegate {
-   
-    
-
     
     // MARK: - Properties
     
@@ -26,22 +23,28 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     var currentKey: String?
     var userProfileController: UserProfileVC?
     
+    var messageNotificationView: MessageNotificationView = {
+        let view = MessageNotificationView()
+        return view
+    }()
     
+    // MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         collectionView?.backgroundColor = .white
         
         // register cell classes
         self.collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        // configure logout button
-        configureNavigationBar()
-        
         // configure refresh control
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
+        
+        // configure logout button
+        configureNavigationBar()
         
         // fetch posts
         if !viewSinglePost {
@@ -49,14 +52,17 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setUnreadMessageCount()
+    }
     
     // MARK: - UICollectionViewFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = view.frame.width
-        
-        // heith = widht + 8 (padding) + 40 (height of profile image view) and 8 (for another padding)
         var height = width + 8 + 40 + 8
         height += 50
         height += 60
@@ -65,15 +71,20 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     }
     
     // MARK: - UICollectionViewDataSource
-
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if posts.count > 4 {
+            if indexPath.item == posts.count - 1 {
+                fetchPosts()
+            }
+        }
+    }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         if viewSinglePost {
             return 1
         } else {
@@ -83,6 +94,7 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
+        
         cell.delegate = self
         
         if viewSinglePost {
@@ -93,26 +105,57 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             cell.post = posts[indexPath.item]
         }
         
+        handleHashtagTapped(forCell: cell)
+        handleUsernameLabelTapped(forCell: cell)
+        handleMentionTapped(forCell: cell)
+        
         return cell
     }
     
-
-    
-    
-    
-    //MARK: - Feed Cell Delegates
+    // MARK: - FeedCellDelegate
     
     func handleUsernameTapped(for cell: FeedCell) {
         guard let post = cell.post else { return }
         let userProfileVC = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
         userProfileVC.user = post.user
         navigationController?.pushViewController(userProfileVC, animated: true)
-
     }
     
+    
+    
     func handleOptionsTapped(for cell: FeedCell) {
-        print("taaped")
+        guard let post = cell.post else { return }
+        
+        if post.ownerUid == Auth.auth().currentUser?.uid {
+            let alertController = UIAlertController(title: "Options", message: nil, preferredStyle: .actionSheet)
+            
+            alertController.addAction(UIAlertAction(title: "Delete Post", style: .destructive, handler: { (_) in
+                post.deletePost()
+                
+                if !self.viewSinglePost {
+                    self.handleRefresh()
+                } else {
+                    if let userProfileController = self.userProfileController {
+                        _ = self.navigationController?.popViewController(animated: true)
+                        userProfileController.handleRefresh()
+                    }
+                }
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "Edit Post", style: .default, handler: { (_) in
+                
+                let uploadPostController = UploadPostVC()
+                let navigationController = UINavigationController(rootViewController: uploadPostController)
+                uploadPostController.postToEdit = post
+                uploadPostController.uploadAction = UploadPostVC.UploadAction(index: 1)
+                self.present(navigationController, animated: true, completion: nil)
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
     }
+    
     
     func handleLikeTapped(for cell: FeedCell, isDoubleTap: Bool) {
         guard let post = cell.post else { return }
@@ -134,6 +177,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         }
     }
     
+    func handleShowLikes(for cell: FeedCell) {
+        guard let post = cell.post else { return }
+        guard let postId = post.postId else { return }
+        
+        let followLikeVC = FollowLikeVC()
+        followLikeVC.viewingMode = FollowLikeVC.ViewingMode(index: 2)
+        followLikeVC.postId = postId
+        navigationController?.pushViewController(followLikeVC, animated: true)
+    }
+    
     func handleConfigureLikeButton(for cell: FeedCell) {
         guard let post = cell.post else { return }
         guard let postId = post.postId else { return }
@@ -152,19 +205,18 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         }
     }
     
-    
-    
-    
-    func handleShowLikes(for cell: FeedCell) {
+    func configureCommentIndicatorView(for cell: FeedCell) {
         guard let post = cell.post else { return }
         guard let postId = post.postId else { return }
         
-        let followLikeVC = FollowLikeVC()
-        followLikeVC.viewingMode = FollowLikeVC.ViewingMode(index: 2)
-        followLikeVC.postId = postId
-        navigationController?.pushViewController(followLikeVC, animated: true)
+        COMMENT_REF.child(postId).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists() {
+                cell.addCommentIndicatorView(toStackView: cell.stackView)
+            } else {
+                cell.commentIndicatorView.isHidden = true
+            }
+        }
     }
-    
     
     func handleCommentTapped(for cell: FeedCell) {
         guard let post = cell.post else { return }
@@ -172,8 +224,6 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         commentVC.post = post
         navigationController?.pushViewController(commentVC, animated: true)
     }
-    
-    
     
     // MARK: - Handlers
     
@@ -184,6 +234,38 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         collectionView?.reloadData()
     }
     
+    @objc func handleShowMessages() {
+        let messagesController = MessagesController()
+        self.messageNotificationView.isHidden = true
+        navigationController?.pushViewController(messagesController, animated: true)
+    }
+    
+    func handleHashtagTapped(forCell cell: FeedCell) {
+        cell.captionLabel.handleHashtagTap { (hashtag) in
+            let hashtagController = HashtagController(collectionViewLayout: UICollectionViewFlowLayout())
+            hashtagController.hashtag = hashtag.lowercased()
+            self.navigationController?.pushViewController(hashtagController, animated: true)
+        }
+    }
+    
+    func handleMentionTapped(forCell cell: FeedCell) {
+        cell.captionLabel.handleMentionTap { (username) in
+            self.getMentionedUser(withUsername: username)
+        }
+    }
+    
+    func handleUsernameLabelTapped(forCell cell: FeedCell) {
+        guard let user = cell.post?.user else { return }
+        guard let username = user.username else { return }
+        
+        let customType = ActiveType.custom(pattern: "^\(username)\\b")
+        
+        cell.captionLabel.handleCustomTap(for: customType) { (_) in
+            let userProfileController = UserProfileVC(collectionViewLayout: UICollectionViewFlowLayout())
+            userProfileController.user = user
+            self.navigationController?.pushViewController(userProfileController, animated: true)
+        }
+    }
     
     func configureNavigationBar() {
         if !viewSinglePost {
@@ -194,12 +276,17 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         self.navigationItem.title = "Feed"
     }
     
-    
-    @objc func handleShowMessages() {
-
+    func setUnreadMessageCount() {
+        if !viewSinglePost {
+            getUnreadMessageCount { (unreadMessageCount) in
+                guard unreadMessageCount != 0 else { return }
+                self.navigationController?.navigationBar.addSubview(self.messageNotificationView)
+                self.messageNotificationView.anchor(top: self.navigationController?.navigationBar.topAnchor, left: nil, bottom: nil, right: self.navigationController?.navigationBar.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 20, height: 20)
+                self.messageNotificationView.layer.cornerRadius = 20 / 2
+                self.messageNotificationView.notificationLabel.text = "\(unreadMessageCount)"
+            }
+        }
     }
-    
-    
     
     @objc func handleLogout() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -219,8 +306,16 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         present(alertController, animated: true, completion: nil)
     }
     
-    
     // MARK: - API
+    
+    func setUserFCMToken() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        guard let fcmToken = Messaging.messaging().fcmToken else { return }
+        
+        let values = ["fcmToken": fcmToken]
+        
+        USER_REF.child(currentUid).updateChildValues(values)
+    }
     
     func fetchPosts() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
@@ -267,7 +362,29 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
         }
     }
     
-    
- 
-
+    func getUnreadMessageCount(withCompletion completion: @escaping(Int) -> ()) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        var unreadCount = 0
+        
+        USER_MESSAGES_REF.child(currentUid).observe(.childAdded) { (snapshot) in
+            let uid = snapshot.key
+            
+            USER_MESSAGES_REF.child(currentUid).child(uid).observe(.childAdded, with: { (snapshot) in
+                let messageId = snapshot.key
+                
+                MESSAGES_REF.child(messageId).observeSingleEvent(of: .value) { (snapshot) in
+                    guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
+                    
+                    let message = Message(dictionary: dictionary)
+                    
+                    if message.fromId != currentUid {
+                        if !message.read  {
+                            unreadCount += 1
+                        }
+                    }
+                    completion(unreadCount)
+                }
+            })
+        }
+    }
 }

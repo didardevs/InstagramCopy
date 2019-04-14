@@ -10,8 +10,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
-private let reuseIdentifier = "FollowCell"
-
+private let reuseIdentifer = "FollowCell"
 
 class FollowLikeVC: UITableViewController, FollowCellDelegate {
     
@@ -21,7 +20,6 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
     var likeCurrentKey: String?
     
     enum ViewingMode: Int {
-        
         case Following
         case Followers
         case Likes
@@ -45,7 +43,7 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
         super.viewDidLoad()
         
         // register cell class
-        tableView.register(FollowLikeCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(FollowLikeCell.self, forCellReuseIdentifier: reuseIdentifer)
         
         // configure nav titles
         configureNavigationTitle()
@@ -80,7 +78,7 @@ class FollowLikeVC: UITableViewController, FollowCellDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! FollowLikeCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifer, for: indexPath) as! FollowLikeCell
         
         cell.delegate = self
         

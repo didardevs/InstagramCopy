@@ -106,5 +106,4 @@ class User {
         
         NOTIFICATIONS_REF.child(self.uid).childByAutoId().updateChildValues(values)
     }
-    
 }

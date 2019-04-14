@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 
 class FollowLikeCell: UITableViewCell {
+    
     // MARK: - Properties
     
     var delegate: FollowCellDelegate?

@@ -10,15 +10,15 @@ import UIKit
 
 class SelectPhotoCell: UICollectionViewCell {
     
-    let photoImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let photoImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
         return iv
     }()
     
-    override init (frame: CGRect){
+    override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(photoImageView)

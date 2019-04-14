@@ -16,38 +16,34 @@ private let headerIdentifier = "UserProfileHeader"
 
 class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UserProfileHeaderDelegate {
     
-    
-    
-    //MARK: - Properties
-    
+    // MARK: - Properties
     
     var user: User?
     var posts = [Post]()
     var currentKey: String?
     
-    
-    
+    // MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //register cell classes
+        // register cell classes
         self.collectionView!.register(UserPostCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
         
-        //background color
-        self.collectionView.backgroundColor = .white
+        // configure refresh control
+        configureRefreshControl()
         
-        //fetch user data
-        if self.user == nil{
+        // background color
+        self.collectionView?.backgroundColor = .white
+        
+        // fetch user data
+        if self.user == nil {
             fetchCurrentUserData()
-            
         }
         
         // fetch posts
         fetchPosts()
-        
-        
     }
     
     // MARK: - UICollectionViewFlowLayout
@@ -69,33 +65,41 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return CGSize(width: view.frame.width, height: 200)
     }
     
-    //MARK: - UICollectionView
+    // MARK: - UICollectionView
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
         return 1
     }
     
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if posts.count > 9 {
+            if indexPath.item == posts.count - 1 {
+                fetchPosts()
+            }
+        }
+    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
         return posts.count
     }
+    
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         // declare header
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! UserProfileHeader
         
-        //header delegate
-        
+        // set delegate
         header.delegate = self
         
+        // set the user in header
         header.user = self.user
         navigationItem.title = user?.username
         
         // return header
         return header
     }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! UserPostCell
         
@@ -104,7 +108,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return cell
     }
     
-    // view single post
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let feedVC = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
@@ -117,12 +120,33 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         navigationController?.pushViewController(feedVC, animated: true)
     }
     
-    //MARK: - Delegates
+    // MARK: - UserProfileHeader
+    
+    func handleFollowersTapped(for header: UserProfileHeader) {
+        let followVC = FollowLikeVC()
+        followVC.viewingMode = FollowLikeVC.ViewingMode(index: 1)
+        followVC.uid = user?.uid
+        navigationController?.pushViewController(followVC, animated: true)
+    }
+    
+    func handleFollowingTapped(for header: UserProfileHeader) {
+        let followVC = FollowLikeVC()
+        followVC.viewingMode = FollowLikeVC.ViewingMode(index: 0)
+        followVC.uid = user?.uid
+        navigationController?.pushViewController(followVC, animated: true)
+    }
+    
     func handleEditFollowTapped(for header: UserProfileHeader) {
         
         guard let user = header.user else { return }
         
         if header.editProfileFollowButton.titleLabel?.text == "Edit Profile" {
+            
+            let editProfileController = EditProfileController()
+            editProfileController.user = user
+            editProfileController.userProfileController = self
+            let navigationController = UINavigationController(rootViewController: editProfileController)
+            present(navigationController, animated: true, completion: nil)
             
         } else {
             
@@ -135,8 +159,6 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             }
         }
     }
-    
-    
     
     func setUserStats(for header: UserProfileHeader) {
         
@@ -185,28 +207,23 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
     }
     
+    // MARK: - Handlers
     
-    // MARK: - UserProfileHeader
-    
-    func handleFollowersTapped(for header: UserProfileHeader) {
-        let followVC = FollowLikeVC()
-        followVC.viewingMode = FollowLikeVC.ViewingMode(index: 1)
-        followVC.uid = user?.uid
-        navigationController?.pushViewController(followVC, animated: true)
+    @objc func handleRefresh() {
+        posts.removeAll(keepingCapacity: false)
+        self.currentKey = nil
+        fetchPosts()
+        collectionView?.reloadData()
     }
     
-    func handleFollowingTapped(for header: UserProfileHeader) {
-        let followVC = FollowLikeVC()
-        followVC.viewingMode = FollowLikeVC.ViewingMode(index: 0)
-        followVC.uid = user?.uid
-        navigationController?.pushViewController(followVC, animated: true)
+    func configureRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView?.refreshControl = refreshControl
     }
     
+    // MARK: - API
     
-    
-    
-    
-    //MARK: - API
     func fetchPosts() {
         
         var uid: String!
@@ -252,8 +269,7 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
     }
     
-    
-    func fetchPost(withPostId postId: String){
+    func fetchPost(withPostId postId: String) {
         Database.fetchPost(with: postId) { (post) in
             
             self.posts.append(post)
@@ -265,22 +281,17 @@ class UserProfileVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
     }
     
-    func fetchCurrentUserData(){
+    func fetchCurrentUserData() {
         
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
         Database.database().reference().child("users").child(currentUid).observeSingleEvent(of: .value) { (snapshot) in
-            
             guard let dictionary = snapshot.value as? Dictionary<String, AnyObject> else { return }
             let uid = snapshot.key
             let user = User(uid: uid, dictionary: dictionary)
-            
-            
             self.user = user
             self.navigationItem.title = user.username
-            self.collectionView.reloadData()
-            
+            self.collectionView?.reloadData()
         }
-        
     }
-    
 }

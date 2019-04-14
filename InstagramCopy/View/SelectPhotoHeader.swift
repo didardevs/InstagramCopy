@@ -10,18 +10,14 @@ import UIKit
 
 class SelectPhotoHeader: UICollectionViewCell {
     
-    //MARK: - Properties
-    let photoImageView: CustomImageView = {
-        let iv = CustomImageView()
+    let photoImageView: UIImageView = {
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true        
+        iv.clipsToBounds = true
         return iv
     }()
-
     
-    
-    //MARK: - Init
-    override init (frame: CGRect){
+    override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(photoImageView)
@@ -31,8 +27,5 @@ class SelectPhotoHeader: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
     
 }

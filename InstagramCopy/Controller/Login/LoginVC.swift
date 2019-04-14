@@ -158,4 +158,13 @@ class LoginVC: UIViewController {
         view.addSubview(stackView)
         stackView.anchor(top: logoContainerView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 140)
     }
+
+    public func showMessage(messageToDisplay:String){
+        let alertController = UIAlertController(title: "Alert title", message: messageToDisplay, preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
+        }
+        alertController.addAction(OKAction)
+        
+        self.present(alertController, animated: true, completion:nil)
+    }
 }

@@ -13,8 +13,9 @@ import FirebaseDatabase
 import ActiveLabel
 
 class FeedCell: UICollectionViewCell {
-    var stackView: UIStackView!
+    
     var delegate: FeedCellDelegate?
+    var stackView: UIStackView!
     
     var post: Post? {
         
@@ -33,17 +34,15 @@ class FeedCell: UICollectionViewCell {
             
             likesLabel.text = "\(likes) likes"
             configureLikeButton()
-
+            configureCommentIndicatorView()
         }
     }
-    
     
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
-        
         return iv
     }()
     
@@ -75,6 +74,7 @@ class FeedCell: UICollectionViewCell {
         likeTap.numberOfTapsRequired = 2
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(likeTap)
+        
         return iv
     }()
     
@@ -113,7 +113,7 @@ class FeedCell: UICollectionViewCell {
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = "3 likes"
         
-//         add gesture recognizer to label
+        // add gesture recognizer to label
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(handleShowLikes))
         likeTap.numberOfTapsRequired = 1
         label.isUserInteractionEnabled = true
@@ -191,9 +191,7 @@ class FeedCell: UICollectionViewCell {
     @objc func handleCommentTapped() {
         delegate?.handleCommentTapped(for: self)
     }
-    func configureLikeButton() {
-        delegate?.handleConfigureLikeButton(for: self)
-    }
+    
     @objc func handleShowLikes() {
         delegate?.handleShowLikes(for: self)
     }
@@ -201,17 +199,13 @@ class FeedCell: UICollectionViewCell {
     @objc func handleDoubleTapToLike() {
         delegate?.handleLikeTapped(for: self, isDoubleTap: true)
     }
-    func configureActionButtons() {
-        stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, messageButton])
-        
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        
-        addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
-        
-        addSubview(savePostButton)
-        savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 20, height: 24)
+    
+    func configureLikeButton() {
+        delegate?.handleConfigureLikeButton(for: self)
+    }
+    
+    func configureCommentIndicatorView() {
+        delegate?.configureCommentIndicatorView(for: self)
     }
     
     func configurePostCaption(user: User) {
@@ -246,6 +240,28 @@ class FeedCell: UICollectionViewCell {
         }
         
         postTimeLabel.text = post.creationDate.timeAgoToDisplay()
+    }
+    
+    func configureActionButtons() {
+        stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, messageButton])
+        
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        
+        addSubview(stackView)
+        stackView.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 120, height: 50)
+        
+        addSubview(savePostButton)
+        savePostButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 20, height: 24)
+    }
+    
+    func addCommentIndicatorView(toStackView stackView: UIStackView) {
+        
+        commentIndicatorView.isHidden = false
+        
+        stackView.addSubview(commentIndicatorView)
+        commentIndicatorView.anchor(top: stackView.topAnchor, left: stackView.leftAnchor, bottom: nil, right: nil, paddingTop: 14, paddingLeft: 64, paddingBottom: 0, paddingRight: 0, width: 10, height: 10)
+        commentIndicatorView.layer.cornerRadius = 10 / 2
     }
     
     required init?(coder aDecoder: NSCoder) {

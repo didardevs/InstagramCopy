@@ -1,14 +1,16 @@
 //
-//  UserPostCell.swift
+//  HashtagCell.swift
 //  InstagramCopy
 //
-//  Created by Didar Naurzbayev on 2/7/19.
+//  Created by Didar Naurzbayev on 3/29/19.
 //  Copyright © 2019 Didar Naurzbayev. All rights reserved.
 //
 
 import UIKit
 
-class UserPostCell: UICollectionViewCell {
+class HashtagCell: UICollectionViewCell {
+    
+    // MARK: - Properties
     
     var post: Post? {
         
@@ -25,6 +27,8 @@ class UserPostCell: UICollectionViewCell {
         iv.backgroundColor = .lightGray
         return iv
     }()
+    
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)

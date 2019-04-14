@@ -10,7 +10,9 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
-class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    // MARK: - Properties
     
     var imageSelected = false
     
@@ -20,6 +22,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
         button.addTarget(self, action: #selector(handleSelectProfilePhoto), for: .touchUpInside)
         return button
     }()
+    
     let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
@@ -83,8 +86,9 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
         return button
     }()
     
-    
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         // background color
         view.backgroundColor = .white
         
@@ -100,6 +104,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
     
     // MARK: - UIImagePickerController
     
+    /// function that handles selecting image from camera roll
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         // selected image
@@ -121,6 +126,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
         self.dismiss(animated: true, completion: nil)
     }
     
+    // MARK: - Handlers
     @objc func handleSelectProfilePhoto() {
         
         // configure image picker
@@ -140,7 +146,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
     @objc func handleSignUp() {
         
         // properties
-        guard let email = emailTextField.text?.lowercased() else { return }
+        guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let fullName = fullNameTextField.text else { return }
         guard let username = usernameTextField.text?.lowercased() else { return }
@@ -178,9 +184,10 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
                     
                     // user id
                     guard let uid = authResult?.user.uid else { return }
-                    //guard let fcmToken = Messaging.messaging().fcmToken else { return }
+                    guard let fcmToken = Messaging.messaging().fcmToken else { return }
                     
                     let dictionaryValues = ["name": fullName,
+                                            "fcmToken": fcmToken,
                                             "username": username,
                                             "profileImageUrl": profileImageUrl]
                     
@@ -193,6 +200,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
                         
                         // configure view controllers in maintabvc
                         mainTabVC.configureViewControllers()
+                        mainTabVC.isInitialLoad = true
                         
                         // dismiss login controller
                         self.dismiss(animated: true, completion: nil)
@@ -218,6 +226,7 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
         signUpButton.isEnabled = true
         signUpButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
     }
+    
     func configureViewComponents() {
         
         let stackView = UIStackView(arrangedSubviews: [emailTextField, fullNameTextField, usernameTextField, passwordTextField, signUpButton])
@@ -229,5 +238,4 @@ class SignUpVC: UIViewController,  UIImagePickerControllerDelegate, UINavigation
         view.addSubview(stackView)
         stackView.anchor(top: plusPhotoBtn.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 24, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 240)
     }
-    
 }

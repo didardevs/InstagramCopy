@@ -12,11 +12,11 @@ import FirebaseAuth
 
 class UserProfileHeader: UICollectionViewCell {
     
+    // MARK: - Properties
     
     var delegate: UserProfileHeaderDelegate?
     
-    
-    var user: User?{
+    var user: User? {
         didSet {
             
             // configure edit profile button
@@ -34,32 +34,27 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     
-    //MARK: - Properties
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.backgroundColor = .lightGray
-        
         return iv
     }()
     
-    let nameLabel : UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Didardevs"
         label.font = UIFont.boldSystemFont(ofSize: 12)
         return label
     }()
     
-    let postsLabel : UILabel = {
+    let postsLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        
-        attributedText.append(NSMutableAttributedString(string: "posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
-        label.attributedText = attributedText
         label.textAlignment = .center
-        
+        let attributedText = NSMutableAttributedString(string: "5\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+        label.attributedText = attributedText
         return label
     }()
     
@@ -130,16 +125,7 @@ class UserProfileHeader: UICollectionViewCell {
         return button
     }()
     
-    
     // MARK: - Handlers
-    
-    @objc func handleEditProfileFollow() {
-        delegate?.handleEditFollowTapped(for: self)
-    }
-    
-    func setUserStats(for user: User?) {
-        delegate?.setUserStats(for: self)
-    }
     
     @objc func handleFollowersTapped() {
         delegate?.handleFollowersTapped(for: self)
@@ -149,7 +135,13 @@ class UserProfileHeader: UICollectionViewCell {
         delegate?.handleFollowingTapped(for: self)
     }
     
+    @objc func handleEditProfileFollow() {
+        delegate?.handleEditFollowTapped(for: self)
+    }
     
+    func setUserStats(for user: User?) {
+        delegate?.setUserStats(for: self)
+    }
     
     func configureBottomToolBar() {
         

@@ -6,6 +6,7 @@ target 'InstagramCopy' do
   use_frameworks!
 
   # Pods for InstagramCopy
+
    pod 'Firebase/Core'
    pod 'Firebase/Database'
    pod 'Firebase/Storage'

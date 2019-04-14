@@ -7,8 +7,7 @@
 //
 
 import Firebase
-import FirebaseDatabase
-import FirebaseStorage
+
 // MARK: - Root References
 
 let DB_REF = Database.database().reference()
@@ -53,4 +52,3 @@ let COMMENT_INT_VALUE = 1
 let FOLLOW_INT_VALUE = 2
 let COMMENT_MENTION_INT_VALUE = 3
 let POST_MENTION_INT_VALUE = 4
-
