@@ -10,7 +10,10 @@ import UIKit
 import Firebase
 
 class MessageCell: UITableViewCell {
+    
     // MARK: - Properties
+    
+    var delegate: MessageCellDelegate?
     
     var message: Message? {
         
@@ -27,7 +30,7 @@ class MessageCell: UITableViewCell {
             
             messageTextLabel.text = messageText
             configureTimestamp(forMessage: message)
-            
+            delegate?.configureUserData(for: self)
         }
     }
     
@@ -59,10 +62,11 @@ class MessageCell: UITableViewCell {
         return label
     }()
     
-    
     // MARK: - Init
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         selectionStyle = .none
         
         addSubview(profileImageView)
@@ -79,10 +83,12 @@ class MessageCell: UITableViewCell {
         addSubview(timestampLabel)
         timestampLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 0, height: 0)
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Handlers
     
     func configureTimestamp(forMessage message: Message) {
         if let seconds = message.creationDate {
@@ -91,4 +97,6 @@ class MessageCell: UITableViewCell {
             timestampLabel.text = dateFormatter.string(from: seconds)
         }
     }
+    
 }
+

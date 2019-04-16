@@ -384,4 +384,3 @@ extension ChatController: ChatCellDelegate {
         cell.playButton.isHidden = true
     }
 }
-

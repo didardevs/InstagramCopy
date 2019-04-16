@@ -30,8 +30,11 @@ class MessageInputAccesoryView: UIView {
     }()
     
     let uploadImageIcon: UIImageView = {
-        let iv = UIImageView()
-        iv.image = #imageLiteral(resourceName: "upload_image_icon")
+        
+        let imageName = "upload_image_icon"
+        let image = UIImage(named: imageName)
+        let iv = UIImageView(image: image)
+
         return iv
     }()
     

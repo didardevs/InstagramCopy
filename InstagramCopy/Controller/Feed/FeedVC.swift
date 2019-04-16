@@ -165,14 +165,14 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             if !isDoubleTap {
                 post.adjustLikes(addLike: false, completion: { (likes) in
                     cell.likesLabel.text = "\(likes) likes"
-                    cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                    cell.likeButton.setImage(UIImage(named:"like_unselected"), for: .normal)
                 })
             }
         } else {
             // handle like post
             post.adjustLikes(addLike: true, completion: { (likes) in
                 cell.likesLabel.text = "\(likes) likes"
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                cell.likeButton.setImage(UIImage(named:"like_selected"), for: .normal)
             })
         }
     }
@@ -197,10 +197,10 @@ class FeedVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, Fe
             // check if post id exists in user-like structure
             if snapshot.hasChild(postId) {
                 post.didLike = true
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_selected"), for: .normal)
+                cell.likeButton.setImage(UIImage(named:"like_selected"), for: .normal)
             } else {
                 post.didLike = false
-                cell.likeButton.setImage(#imageLiteral(resourceName: "like_unselected"), for: .normal)
+                cell.likeButton.setImage(UIImage(named:"like_unselected"), for: .normal)
             }
         }
     }
